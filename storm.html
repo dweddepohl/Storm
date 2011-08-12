@@ -34,7 +34,7 @@
 			list.forEach( function(word) {
 				// Clean up word
 				word = word.toLowerCase();
-				word = word.replace(/[\(\)\.\-\s,\n\[\]]*/g, "");
+				word = word.replace(/[\(\)\.\-\s,\n\[\]:"]*/g, "");
 
 				if (word.length > 0) {
 					if (words[word] == null)
