@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+	<title>Storm</title>
+	<style>
+		body {
+				font-family: Arial;
+				color: #fff;
+				background-color: #000;
+				text-align: center;
+		}
+
+		span {
+			margin: 0px 10px 0px 10px;
+		}
+
+		#storm {
+				width: 100%;
+				background-color: #000;
+				font-size: 1000px;
+		}
+	</style>
+
+  <script src="http://code.jquery.com/jquery-1.6.2.js"></script>
+
+	<script>
+		var words = [];
+		var i = 1000;
+
+		function enter() {
+			var input = get('word').value;
+			var list = input.split(" ");
+
+			list.forEach( function(word) {
+				// Clean up word
+				word = word.toLowerCase();
+				word = word.replace(/[\(\)\.\-\s,\n\[\]]*/g, "");
+
+				if (word.length > 0) {
+					if (words[word] == null)
+						insert(word);
+					else
+						repeat(word);
+
+				}
+			});
+
+			// Scale content to fit window
+			resize();
+		}
+
+		// Add a new word to the document
+		function insert(word) {
+				var storm = get('storm');
+
+				words[word] = 1;
+				storm.innerHTML += '<span id="' + word + '">' + word + ' </span>';
+		} 
+
+		// Increase the size of an existing word
+		function repeat(word) {
+				var existing = get(word);
+
+				words[word] += 1;
+				existing.style.fontSize = 100 + words[word] * 50 + '%';
+		} 
+
+		// Scale content to fit window
+		function resize() {
+			var storm = get('storm');
+
+			while (storm.offsetHeight > window.innerHeight - 100 && i > 5) 
+					storm.style.fontSize = i-- + 'px';
+		}
+
+		function get(eid) {
+			return document.getElementById(eid);
+		}
+
+		$("#word").keyup(function(event){
+			if(event.keyCode == 13){
+				$("#add").click();
+			}
+		});
+
+		$('#word').keyup(function(e) {
+			if(e.keyCode == 13) {
+				enter();
+			}
+		});
+</script>
+</head>
+
+<body>
+	<div id="form">
+		<form onSubmit="enter(); word = get('word'); word.value = '';	return false;">
+			<input id="word" type="text" name="word" autofocus/>
+			<input id="add" type="button" value="Add" onClick="enter();" />
+		</form>
+	</div>
+
+	<div id="storm"></div>
+</body>
+</html>
